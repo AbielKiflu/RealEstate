@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstate.Data;
 
@@ -11,9 +12,10 @@ using RealEstate.Data;
 namespace RealEstate.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220717200223_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,15 +277,7 @@ namespace RealEstate.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int>("PropertyTypeID")
-                        .HasColumnType("int");
-
-                    b.Property<long>("PropertyTypeModelID")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PropertyTypeModelID");
 
                     b.ToTable("PropertyModels");
                 });
@@ -301,7 +295,15 @@ namespace RealEstate.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("PropertyID")
+                        .HasColumnType("int");
+
+                    b.Property<long>("PropertyModelId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("PropertyModelId");
 
                     b.ToTable("PropertyTypeModels");
                 });
@@ -357,20 +359,20 @@ namespace RealEstate.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RealEstate.Models.PropertyModel", b =>
+            modelBuilder.Entity("RealEstate.Models.PropertyTypeModel", b =>
                 {
-                    b.HasOne("RealEstate.Models.PropertyTypeModel", "PropertyTypeModel")
-                        .WithMany("PropertyModel")
-                        .HasForeignKey("PropertyTypeModelID")
+                    b.HasOne("RealEstate.Models.PropertyModel", "PropertyModel")
+                        .WithMany("PropertyTypeModel")
+                        .HasForeignKey("PropertyModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("PropertyTypeModel");
+                    b.Navigation("PropertyModel");
                 });
 
-            modelBuilder.Entity("RealEstate.Models.PropertyTypeModel", b =>
+            modelBuilder.Entity("RealEstate.Models.PropertyModel", b =>
                 {
-                    b.Navigation("PropertyModel");
+                    b.Navigation("PropertyTypeModel");
                 });
 #pragma warning restore 612, 618
         }

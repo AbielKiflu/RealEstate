@@ -20,5 +20,9 @@ namespace RealEstate.Data
            
         }
 
+
+        DbSet<PropertyTypeModel> PropertyTypes { get; set; }
+        DbSet<PropertyModel> Properties { get; set; }
+
     }
 }
