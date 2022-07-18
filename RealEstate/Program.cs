@@ -14,8 +14,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddIdentity<ApplicationUser, IdentityRole<Int64>>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+ 
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<Int64>>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 
 var app = builder.Build();
@@ -33,9 +34,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
-//app.UseAuthentication();
+app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",
