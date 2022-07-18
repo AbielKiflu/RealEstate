@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using RealEstate.Models;
+
 
 
 namespace RealEstate.Data
 
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Int64>, Int64>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
@@ -21,8 +23,8 @@ namespace RealEstate.Data
         }
 
 
-        DbSet<PropertyTypeModel> PropertyTypes { get; set; }
-        DbSet<PropertyModel> Properties { get; set; }
+        DbSet<PropertyTypeModel> PropertyType { get; set; }
+        DbSet<PropertyModel> Property { get; set; }
 
     }
 }

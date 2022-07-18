@@ -18,7 +18,7 @@ namespace RealEstate.Models
         [StringLength(50)]
         public string Name { get; set; }
 
-        public List<PropertyModel> PropertyModel { get; set; }
+        public ICollection<PropertyModel> PropertyModel { get; set; }
 
 
 

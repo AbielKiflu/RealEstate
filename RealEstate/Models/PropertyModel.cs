@@ -1,8 +1,4 @@
-﻿
-
-
-using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
 
 namespace RealEstate.Models
@@ -17,6 +13,10 @@ namespace RealEstate.Models
         [Key]
         public Int64 Id { get; set; }
 
+        public Int64 UserID { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+
+
         [StringLength(50)]
         public string Description { get; set; }
 
@@ -28,17 +28,23 @@ namespace RealEstate.Models
 
         public string City { get; set; }
 
+        public string street { get; set; }
+
+        [Display(Name = "Postal Code")]
         public string PostalCode { get; set; }
 
-        public string Area { get; set; }
+        public string Area { get; set; } = string.Empty;
 
-        public float Price { get; set; }
+        public float Price { get; set; } = 0;
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
+        public string service { get; set; } // rent or sell
 
+        [Display(Name = "Type")]
         public Int64 PropertyTypeID { get; set; }
 
-        public PropertyTypeModel PropertyTypes { get; set; }
+
+        public PropertyTypeModel PropertyType { get; set; }
 
       
 
