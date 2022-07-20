@@ -12,8 +12,8 @@ using RealEstate.Data;
 namespace RealEstate.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220718095058_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20220720082136_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,7 +51,7 @@ namespace RealEstate.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("Role", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
@@ -99,7 +99,7 @@ namespace RealEstate.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
+                    b.ToTable("UserClaim", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<long>", b =>
@@ -120,7 +120,7 @@ namespace RealEstate.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
+                    b.ToTable("UserLogin", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<long>", b =>
@@ -135,7 +135,7 @@ namespace RealEstate.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
+                    b.ToTable("UserRole", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<long>", b =>
@@ -231,10 +231,10 @@ namespace RealEstate.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("User", (string)null);
                 });
 
-            modelBuilder.Entity("RealEstate.Models.PropertyModel", b =>
+            modelBuilder.Entity("RealEstate.Models.Property", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -242,16 +242,15 @@ namespace RealEstate.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<long>("ApplicationUserId")
+                    b.Property<long>("ApplicationUserID")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Area")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("City")
+                        .HasColumnType("int");
 
                     b.Property<string>("Country")
                         .IsRequired()
@@ -273,6 +272,10 @@ namespace RealEstate.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Picture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PostalCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -283,27 +286,24 @@ namespace RealEstate.Migrations
                     b.Property<long>("PropertyTypeID")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserID")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("service")
+                    b.Property<string>("Service")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("street")
+                    b.Property<string>("Street")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("ApplicationUserID");
 
                     b.HasIndex("PropertyTypeID");
 
                     b.ToTable("Property");
                 });
 
-            modelBuilder.Entity("RealEstate.Models.PropertyTypeModel", b =>
+            modelBuilder.Entity("RealEstate.Models.PropertyType", b =>
                 {
                     b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
@@ -372,16 +372,16 @@ namespace RealEstate.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RealEstate.Models.PropertyModel", b =>
+            modelBuilder.Entity("RealEstate.Models.Property", b =>
                 {
                     b.HasOne("RealEstate.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("PropertyModel")
-                        .HasForeignKey("ApplicationUserId")
+                        .WithMany("Properties")
+                        .HasForeignKey("ApplicationUserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RealEstate.Models.PropertyTypeModel", "PropertyType")
-                        .WithMany("PropertyModel")
+                    b.HasOne("RealEstate.Models.PropertyType", "PropertyType")
+                        .WithMany("Properties")
                         .HasForeignKey("PropertyTypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -393,12 +393,12 @@ namespace RealEstate.Migrations
 
             modelBuilder.Entity("RealEstate.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("PropertyModel");
+                    b.Navigation("Properties");
                 });
 
-            modelBuilder.Entity("RealEstate.Models.PropertyTypeModel", b =>
+            modelBuilder.Entity("RealEstate.Models.PropertyType", b =>
                 {
-                    b.Navigation("PropertyModel");
+                    b.Navigation("Properties");
                 });
 #pragma warning restore 612, 618
         }

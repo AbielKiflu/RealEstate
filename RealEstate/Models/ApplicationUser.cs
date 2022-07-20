@@ -10,7 +10,7 @@ namespace RealEstate.Models
 
         public string? PostalCode { get; set; }
 
-        public ICollection<PropertyModel> PropertyModel { get; set; }
+        public ICollection<Property> Properties { get; set; }
 
 
     }

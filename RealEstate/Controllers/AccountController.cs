@@ -30,6 +30,8 @@ namespace RealEstate.Controllers
 
 
         [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -72,6 +74,7 @@ namespace RealEstate.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel user)
         {
             if (ModelState.IsValid)
@@ -87,6 +90,7 @@ namespace RealEstate.Controllers
 
             }
             return View(user);
+
         }
 
 

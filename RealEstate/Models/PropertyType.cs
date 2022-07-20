@@ -10,7 +10,7 @@ namespace RealEstate.Models
 
 
 
-    public class PropertyTypeModel
+    public class PropertyType
     {
         [Key]
         public Int64 ID { get; set; }
@@ -18,7 +18,7 @@ namespace RealEstate.Models
         [StringLength(50)]
         public string Name { get; set; }
 
-        public ICollection<PropertyModel> PropertyModel { get; set; }
+        public ICollection<Property> Properties { get; set; }
 
 
 
