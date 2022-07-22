@@ -1,45 +1,46 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RealEstate.Data;
 using RealEstate.Models;
-using System.Diagnostics;
+using RealEstate.Data;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace RealEstate.Controllers
 {
-    public class PropertyController : Controller
+    public class PropertyTypeController : Controller
     {
-        private readonly ILogger<PropertyController> _logger;
         private readonly ApplicationDbContext _db;
-        public PropertyController(ApplicationDbContext db, ILogger<PropertyController> logger)
+        public PropertyTypeController(ApplicationDbContext db)
         {
             _db = db;
-            _logger = logger;
+        }
+
+
+        public IActionResult Index()
+        {
+            IEnumerable <PropertyType> result= _db.PropertyType;
+            return View(result);
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
-           // IEnumerable<Property> list = _db.
             return View();
         }
 
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Property model)
-        {
-             
-            model.PropertyTypeID = 1;
-            model.ApplicationUserID = 1;
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult Create(PropertyType model)
+        {
             try
             {
+               //ModelState.Remove("Properties");
                 if (ModelState.IsValid)
                 {
-                    _db.Property.Add(model);
-                    _db.SaveChanges();
-
+                    _db.PropertyType.Add(model);
                 }
                 else
                 {
@@ -49,22 +50,14 @@ namespace RealEstate.Controllers
             catch (DbUpdateException /* ex */)
             {
                 //Log the error (uncomment ex variable name and write a log.
-                //Log the error (uncomment ex variable name and write a log.
                 ModelState.AddModelError("", "Unable to save changes. " +
                     "Try again, and if the problem persists " +
                     "see your system administrator.");
-
             }
 
-
-
-            return View(model);
+            return RedirectToAction("Index");
         }
 
 
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
