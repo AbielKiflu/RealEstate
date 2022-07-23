@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Models;
 using RealEstate.Data;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace RealEstate.Controllers
@@ -35,12 +34,16 @@ namespace RealEstate.Controllers
         [Authorize]
         public IActionResult Create(PropertyType model)
         {
+
+
             try
             {
-               //ModelState.Remove("Properties");
+               ModelState.Remove("ID");
                 if (ModelState.IsValid)
                 {
-                    _db.PropertyType.Add(model);
+                    PropertyType mdl = new PropertyType { Name = model.Name };
+                    _db.PropertyType.Add(mdl);
+                    _db.SaveChanges();
                 }
                 else
                 {

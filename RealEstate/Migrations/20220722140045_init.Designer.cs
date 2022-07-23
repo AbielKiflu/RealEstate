@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstate.Data;
 
@@ -11,9 +12,10 @@ using RealEstate.Data;
 namespace RealEstate.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220722140045_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,7 +242,7 @@ namespace RealEstate.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<long?>("ApplicationUserID")
+                    b.Property<long>("ApplicationUserID")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Area")
@@ -275,7 +277,7 @@ namespace RealEstate.Migrations
                     b.Property<float?>("Price")
                         .HasColumnType("real");
 
-                    b.Property<long?>("PropertyTypeID")
+                    b.Property<long>("PropertyTypeID")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Service")
@@ -367,11 +369,15 @@ namespace RealEstate.Migrations
                 {
                     b.HasOne("RealEstate.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Properties")
-                        .HasForeignKey("ApplicationUserID");
+                        .HasForeignKey("ApplicationUserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("RealEstate.Models.PropertyType", "PropertyType")
                         .WithMany("Properties")
-                        .HasForeignKey("PropertyTypeID");
+                        .HasForeignKey("PropertyTypeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ApplicationUser");
 

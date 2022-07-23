@@ -13,7 +13,7 @@ namespace RealEstate.Models
         [StringLength(50)]
         public string Name { get; set; }
 
-        public ICollection<Property> Properties { get; set; } = new List<Property>();
+        public ICollection<Property>? Properties { get; set; } = new List<Property>();
 
 
 

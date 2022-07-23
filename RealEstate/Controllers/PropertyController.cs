@@ -56,10 +56,18 @@ namespace RealEstate.Controllers
 
             }
 
-
-
             return View(model);
         }
+
+
+        [Authorize]
+        public IActionResult Index()
+        {
+            IEnumerable<Property> result = _db.Property;
+            return View(result);
+        }
+
+
 
 
         public IActionResult Error()

@@ -21,8 +21,8 @@ namespace RealEstate.Models
         public Int64 Id { get; set; }
 
         [Display(Name = "User")]
-        public Int64 ApplicationUserID { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public Int64? ApplicationUserID { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; }
 
 
         [StringLength(50)]
@@ -52,9 +52,9 @@ namespace RealEstate.Models
         public string Service { get; set; } // rent or sell
 
         [Display(Name = "Type")]
-        public Int64 PropertyTypeID { get; set; }
+        public Int64? PropertyTypeID { get; set; }
 
-        public PropertyType PropertyType { get; set; }
+        public PropertyType? PropertyType { get; set; }
 
       
 
