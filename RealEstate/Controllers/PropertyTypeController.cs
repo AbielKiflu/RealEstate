@@ -40,7 +40,9 @@ namespace RealEstate.Controllers
                //ModelState.Remove("Properties");
                 if (ModelState.IsValid)
                 {
-                    _db.PropertyType.Add(model);
+                    PropertyType mdl = new PropertyType { Name = model.Name };
+                    _db.PropertyType.Add(mdl);
+                    _db.SaveChanges();
                 }
                 else
                 {
