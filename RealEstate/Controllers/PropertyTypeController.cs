@@ -10,15 +10,17 @@ namespace RealEstate.Controllers
     public class PropertyTypeController : Controller
     {
         private readonly ApplicationDbContext _db;
+
         public PropertyTypeController(ApplicationDbContext db)
         {
             _db = db;
         }
 
 
+        [Authorize]
         public IActionResult Index()
         {
-            IEnumerable <PropertyType> result= _db.PropertyType;
+            IEnumerable<PropertyType> result = _db.PropertyType;
             return View(result);
         }
 
@@ -37,7 +39,7 @@ namespace RealEstate.Controllers
         {
             try
             {
-               //ModelState.Remove("Properties");
+                //ModelState.Remove("Properties");
                 if (ModelState.IsValid)
                 {
                     PropertyType mdl = new PropertyType { Name = model.Name };
@@ -60,6 +62,28 @@ namespace RealEstate.Controllers
             return RedirectToAction("Index");
         }
 
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(long id) 
+        {
+            
+            return View(await _db.PropertyType.FindAsync(id));
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Edit(PropertyType model) 
+        {
+            if (ModelState.IsValid)
+            {
+                _db.PropertyType.Update(model);
+               await _db.SaveChangesAsync();
+            }
+            return View();
+        }
 
     }
 }
