@@ -17,27 +17,33 @@ namespace RealEstate.Controllers
             _logger = logger;
         }
 
+
+
         [HttpGet]
         public IActionResult Create()
         {
-           // IEnumerable<Property> list = _db.
+            var propertyType=_db.PropertyType.Select(p => new { p.ID, p.Name });
+            ViewBag.PropertyType = propertyType;
             return View();
         }
+
+
 
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Property model)
         {
-             
-            model.PropertyTypeID = 1;
+            var propertyType = _db.PropertyType.Select(p => new { p.ID, p.Name });
+            ViewBag.PropertyType = propertyType;
+
             model.ApplicationUserID = 1;
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _db.Property.Add(model);
+                    _db.Add(model);
                     _db.SaveChanges();
 
                 }
