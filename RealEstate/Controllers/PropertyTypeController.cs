@@ -72,18 +72,71 @@ namespace RealEstate.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(PropertyType model) 
+        public async Task<IActionResult> EditType(long? id) 
         {
-            if (ModelState.IsValid)
+            if (id == null)
             {
-                _db.PropertyType.Update(model);
-               await _db.SaveChangesAsync();
+                return NotFound();
+            } 
+             
+                var proportyType= await _db.PropertyType.FirstOrDefaultAsync(pt => pt.ID == id);
+            if (await TryUpdateModelAsync<PropertyType>(proportyType, "", pt => pt.Name))
+            {
+                try
+                {
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
             }
-            return View();
+            
+
+            return View(nameof(Index));
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var propertyType =await  _db.PropertyType.FirstOrDefaultAsync(pt => pt.ID == id);
+            return View(propertyType);
+        }
+
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(long id)
+        {
+            var student = await _db.PropertyType.FindAsync(id);
+            if (student == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            try
+            {
+                _db.PropertyType.Remove(student);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
+            }
+        }
+
+
+
 
     }
 }
