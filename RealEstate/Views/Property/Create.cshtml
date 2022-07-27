@@ -1,4 +1,4 @@
-﻿ @model RealEstate.Models.Property
+﻿ @model RealEstate.ViewModels.PropertyViewModel
 
  
 
@@ -13,7 +13,7 @@
 
 <div class="row">
     <div class="col-md-6 ">
-        <form asp-action="Create"  method="post">
+        <form enctype="multipart/form-data" asp-action="Create"  method="post">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
              
@@ -24,7 +24,7 @@
             </div>
 
             <div class="form-group">
-                 <label asp-for="Service">Options</label>
+                 <label asp-for="Service">Service</label>
                     <select asp-for="Service" class="form-select" id="Service">
                          <option selected></option>
                          <option value="Rent">Rent</option>
@@ -34,7 +34,7 @@
             </div>
            
             <div class="form-group">
-                 <label asp-for="PropertyTypeID">Options</label>
+                 <label asp-for="PropertyTypeID">Type</label>
                     <select asp-for="PropertyTypeID" class="form-select" id="PropertyTypeID">
                          <option selected></option>
                          @foreach(var pType in ViewBag.PropertyType)
@@ -75,6 +75,11 @@
                 <span asp-validation-for="Area" class="text-danger"></span>
             </div>
 
+            <div class="form-group">
+                <label asp-for="Picture"></label>
+                <input  asp-for="Picture" class="form-control" />
+                <span asp-validation-for="Picture" class="text-danger"></span>
+            </div>
 
 
             <button type="submit" class="btn-primary mt-2">Save</button>

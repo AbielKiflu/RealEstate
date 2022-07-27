@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Models;
 using System.Diagnostics;
+using RealEstate.ViewModels;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+
 
 namespace RealEstate.Controllers
 {
@@ -11,18 +14,23 @@ namespace RealEstate.Controllers
     {
         private readonly ILogger<PropertyController> _logger;
         private readonly ApplicationDbContext _db;
-        public PropertyController(ApplicationDbContext db, ILogger<PropertyController> logger)
+        private readonly IHostingEnvironment _env;
+
+
+        public PropertyController(ApplicationDbContext db, ILogger<PropertyController> logger, IHostingEnvironment env)
         {
             _db = db;
+            _env = env;
             _logger = logger;
         }
+
 
 
 
         [HttpGet]
         public IActionResult Create()
         {
-            var propertyType=_db.PropertyType.Select(p => new { p.ID, p.Name });
+            var propertyType = _db.PropertyType.Select(p => new { p.ID, p.Name });
             ViewBag.PropertyType = propertyType;
             return View();
         }
@@ -32,19 +40,47 @@ namespace RealEstate.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Property model)
+        public IActionResult Create(PropertyViewModel model)
         {
+            //string filename = $"{_env.WebRootPath}\\Images";
+
             var propertyType = _db.PropertyType.Select(p => new { p.ID, p.Name });
             ViewBag.PropertyType = propertyType;
 
-            model.ApplicationUserID = 1;
+
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _db.Add(model);
-                    _db.SaveChanges();
+                    if (model.Picture != null)
+                    {
+                        string uploadsFolder = Path.Combine(_env.WebRootPath, "Images");
+                        string fileName = Guid.NewGuid().ToString() + "_" + model.Picture.FileName;
+                        string filePath = Path.Combine(uploadsFolder, fileName);
+                        model.Picture.CopyTo(new FileStream(filePath, FileMode.Create));
+
+                        Property property = new Property
+                        {
+                            Description = model.Description,
+                            City = model.City,
+                            PostalCode = model.PostalCode,
+                            Street = model.Street,
+                            Picture = fileName,
+                            Area = model.Area,
+                            Price = model.Price,
+                            Service = model.Service,
+                            PropertyTypeID = model.PropertyTypeID,
+                            ApplicationUserID = 1
+
+                    };
+
+                        _db.Property.Add(property);
+                        _db.SaveChanges();
+
+                    }
+
+
 
                 }
                 else

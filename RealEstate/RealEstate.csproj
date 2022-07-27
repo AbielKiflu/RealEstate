@@ -7,14 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NewFolder\**" />
+    <Compile Remove="wwwroot\image\**" />
     <Compile Remove="wwwroot\NewFolder1\**" />
-    <Compile Remove="wwwroot\NewFolder\**" />
+    <Content Remove="NewFolder\**" />
+    <Content Remove="wwwroot\image\**" />
     <Content Remove="wwwroot\NewFolder1\**" />
-    <Content Remove="wwwroot\NewFolder\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\image\**" />
     <EmbeddedResource Remove="wwwroot\NewFolder1\**" />
-    <EmbeddedResource Remove="wwwroot\NewFolder\**" />
+    <None Remove="NewFolder\**" />
+    <None Remove="wwwroot\image\**" />
     <None Remove="wwwroot\NewFolder1\**" />
-    <None Remove="wwwroot\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +39,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
   <ItemGroup>
