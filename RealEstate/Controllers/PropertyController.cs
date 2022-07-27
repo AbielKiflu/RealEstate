@@ -19,6 +19,7 @@ namespace RealEstate.Controllers
         public static long userID;
 
 
+
         public PropertyController(ApplicationDbContext db, ILogger<PropertyController> logger, IHostingEnvironment env, UserManager<ApplicationUser> userManager)
         {
             _db = db;
@@ -105,7 +106,7 @@ namespace RealEstate.Controllers
 
 
 
-            return View(model);
+            return View(nameof(Index));
         }
 
 
@@ -126,9 +127,9 @@ namespace RealEstate.Controllers
 
  
 
-        public  IActionResult Details(long id)
+        public  async Task<IActionResult> Details(long id)
         {
-            return View(_db.Property.FindAsync(id));
+            return View( await _db.Property.FindAsync(id));
         }
 
 
