@@ -1,0 +1,98 @@
+﻿@model RealEstate.Models.Property
+
+ 
+
+@{
+    ViewData["Title"] = "Property";
+    var path = "~/Images/" + (Model.Picture ?? "Noimage.jpg");
+}
+ 
+<h1>Edit</h1>
+
+<h4>New Property</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-6 ">
+        <form enctype="multipart/form-data" asp-action="Edit"  method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+             
+
+            <div class="form-group">
+                <img  height="200"  width="200" src="@path" asp-append-version="true"/>
+ 
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <textarea class="form-control"  asp-for="Description" aria-label="With textarea"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                 <label asp-for="Service">Service</label>
+                    <select asp-for="Service" class="form-select" id="Service">
+                         <option selected></option>
+                         <option value="Rent">Rent</option>
+                         <option value="Sell">Sell</option>
+                    </select>
+                    <span asp-validation-for="Service" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                 <label asp-for="PropertyTypeID">Type</label>
+                    <select asp-for="PropertyTypeID" class="form-select" id="PropertyTypeID">
+                         <option selected></option>
+                         @foreach(var pType in ViewBag.PropertyType)
+                         {
+                            <option value="@pType.ID">@pType.Name</option>
+                         }
+                    </select>
+                    <span asp-validation-for="Service" class="text-danger"></span>
+            </div>
+             
+            <div class="form-group">
+                <label asp-for="City"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Street"></label>
+                <input asp-for="Street" class="form-control" />
+                <span asp-validation-for="Street" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PostalCode"></label>
+                <input asp-for="PostalCode" class="form-control" />
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Area"></label>
+                <input asp-for="Area" class="form-control" />
+                <span asp-validation-for="Area" class="text-danger"></span>
+            </div>
+             
+            <button type="submit" class="btn-primary mt-2">Save</button>
+        </form>
+        <br/> <br/> <br/>
+    </div>
+</div>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
+
+              

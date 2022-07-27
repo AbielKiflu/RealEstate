@@ -7,6 +7,7 @@ using System.Diagnostics;
 using RealEstate.ViewModels;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using Microsoft.AspNetCore.Identity;
+ 
 
 namespace RealEstate.Controllers
 {
@@ -106,7 +107,7 @@ namespace RealEstate.Controllers
 
 
 
-            return View(nameof(Index));
+            return View();
         }
 
 
@@ -153,6 +154,13 @@ namespace RealEstate.Controllers
             {
                 _db.Property.Remove(property);
                 await _db.SaveChangesAsync();
+
+                //delete the uploaded image
+                string uploadsFolder = Path.Combine(_env.WebRootPath, "Images");
+                string filePath = Path.Combine(uploadsFolder, property.Picture);
+                System.IO.File.Delete(filePath);
+                
+
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException /* ex */)
@@ -163,6 +171,40 @@ namespace RealEstate.Controllers
         }
 
 
+        public async Task<IActionResult> Edit(long id)
+        {
+            var propertyType = _db.PropertyType.Select(p => new { p.ID, p.Name });
+            ViewBag.PropertyType = propertyType;
+            var proporty = await _db.Property.FirstOrDefaultAsync(p => p.Id == id);
+            return View(proporty);
+        }
+
+
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult EditProperty(Property model)
+        {
+
+            if (model.Picture == null)
+            {
+                 
+            }
+            if (!ModelState.IsValid)
+            {
+
+            }
+
+            try
+            {
+               // _db.Update()
+            }
+            catch(DbUpdateException ex)
+            {
+                // handle ex
+            }
+            return View();
+        }
 
 
     }

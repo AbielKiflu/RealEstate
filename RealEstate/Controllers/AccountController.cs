@@ -104,6 +104,13 @@ namespace RealEstate.Controllers
         }
 
 
+        public IActionResult Profile()
+        {
+            long id=long.Parse(_userManager.GetUserId(User));
+            var user=_userManager.Users.FirstOrDefault(x => x.Id == id);
+            return View(user);
+        }
+
 
 
 
