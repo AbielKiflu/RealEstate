@@ -4,6 +4,8 @@ namespace RealEstate.ViewModels
 {
     public class LoginViewModel
     {
+
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }
@@ -15,3 +17,4 @@ namespace RealEstate.ViewModels
         public bool RememberMe { get; set; }
     }
 }
+

@@ -111,6 +111,41 @@ namespace RealEstate.Controllers
             return View(user);
         }
 
+        [HttpGet]
+        public IActionResult Edit(long id)
+        {
+            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+            var model = new EditUserViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email,
+                City = user.City
+            };
+
+
+            return View(model);
+        }
+
+ 
+
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditUserViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.Id.ToString());
+
+            user.UserName = model.UserName;
+            user.PhoneNumber=model.PhoneNumber;
+            user.Email=model.Email;
+            user.City=model.City;
+
+            var result =await _userManager.UpdateAsync(user);
+
+            return View(model);
+        }
+
 
 
 

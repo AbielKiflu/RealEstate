@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using RealEstate.Models;
+using RealEstate.ViewModels;
  
 
 namespace RealEstate.Data
@@ -36,6 +37,9 @@ namespace RealEstate.Data
 
 
         }
+
+
+        public DbSet<RealEstate.ViewModels.EditUserViewModel>? EditUserViewModel { get; set; }
 
 
 

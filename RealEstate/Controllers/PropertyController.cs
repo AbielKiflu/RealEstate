@@ -170,12 +170,27 @@ namespace RealEstate.Controllers
             }
         }
 
-
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit(long id)
         {
             var propertyType = _db.PropertyType.Select(p => new { p.ID, p.Name });
             ViewBag.PropertyType = propertyType;
             var proporty = await _db.Property.FirstOrDefaultAsync(p => p.Id == id);
+
+            var model = new EditPropertyViewModel
+            {
+                Id = proporty.Id,
+                Description = proporty.Description,
+                City=proporty.City,
+                Street=proporty.Street,
+                PostalCode=proporty.PostalCode,
+                Area=proporty.Area,
+                Price=proporty.Price,
+                Service=proporty.Service,
+
+            };
+
             return View(proporty);
         }
 
