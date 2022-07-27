@@ -116,15 +116,15 @@ namespace RealEstate.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var student = await _db.PropertyType.FindAsync(id);
-            if (student == null)
+            var pType = await _db.PropertyType.FindAsync(id);
+            if (pType == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
             try
             {
-                _db.PropertyType.Remove(student);
+                _db.PropertyType.Remove(pType);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

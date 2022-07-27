@@ -133,9 +133,34 @@ namespace RealEstate.Controllers
         }
 
 
+        public async Task<IActionResult> Delete(long id)
+        {
+            return View(await _db.Property.FindAsync(id));
+        }
 
 
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(long id)
+        {
+            var property = await _db.Property.FindAsync(id);
+            if (property == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
+            try
+            {
+                _db.Property.Remove(property);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
+            }
+        }
 
 
 
