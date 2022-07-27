@@ -6,7 +6,7 @@ using RealEstate.Models;
 using System.Diagnostics;
 using RealEstate.ViewModels;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
-
+using Microsoft.AspNetCore.Identity;
 
 namespace RealEstate.Controllers
 {
@@ -15,13 +15,17 @@ namespace RealEstate.Controllers
         private readonly ILogger<PropertyController> _logger;
         private readonly ApplicationDbContext _db;
         private readonly IHostingEnvironment _env;
+        UserManager<ApplicationUser> _userManager;
+        public static long userID;
 
 
-        public PropertyController(ApplicationDbContext db, ILogger<PropertyController> logger, IHostingEnvironment env)
+        public PropertyController(ApplicationDbContext db, ILogger<PropertyController> logger, IHostingEnvironment env, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _env = env;
             _logger = logger;
+            _userManager = userManager;
+             
         }
 
 
@@ -47,6 +51,7 @@ namespace RealEstate.Controllers
             var propertyType = _db.PropertyType.Select(p => new { p.ID, p.Name });
             ViewBag.PropertyType = propertyType;
 
+            userID = long.Parse(_userManager.GetUserId(User));
 
 
             try
@@ -60,6 +65,9 @@ namespace RealEstate.Controllers
                         string filePath = Path.Combine(uploadsFolder, fileName);
                         model.Picture.CopyTo(new FileStream(filePath, FileMode.Create));
 
+
+                         
+
                         Property property = new Property
                         {
                             Description = model.Description,
@@ -71,17 +79,14 @@ namespace RealEstate.Controllers
                             Price = model.Price,
                             Service = model.Service,
                             PropertyTypeID = model.PropertyTypeID,
-                            ApplicationUserID = 1
+                            ApplicationUserID = userID
 
-                    };
-
+                        };
+                        
                         _db.Property.Add(property);
-                        _db.SaveChanges();
-
+                        _db.SaveChanges(); 
                     }
-
-
-
+                     
                 }
                 else
                 {
@@ -108,5 +113,31 @@ namespace RealEstate.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+
+        public IActionResult Index()
+        {
+            userID = long.Parse(_userManager.GetUserId(User));
+            IEnumerable<Property> property = _db.Property.Where(p=>p.ApplicationUserID == userID);
+            return View(property);
+        }
+
+
+ 
+
+        public  IActionResult Details(long id)
+        {
+            return View(_db.Property.FindAsync(id));
+        }
+
+
+
+
+
+
+
+
+
     }
 }
