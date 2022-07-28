@@ -7,9 +7,9 @@
     var path = "~/Images/" + (Model.Picture ?? "Noimage.jpg");
 }
  
-<h1>Edit</h1>
+ 
 
-<h4>New Property</h4>
+<h4>Edit Property</h4>
 <hr />
 
 <div class="row">
@@ -20,8 +20,9 @@
              
 
             <div class="form-group">
-                <img  height="200"  width="200" src="@path" asp-append-version="true"/>
- 
+                <label asp-for="Picture"></label>
+                <input type="file" asp-for="Picture" class="form-control" />
+                <span asp-validation-for="Picture" class="text-danger"></span>
             </div>
 
             <div class="form-group">

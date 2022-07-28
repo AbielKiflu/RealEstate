@@ -170,6 +170,8 @@ namespace RealEstate.Controllers
             }
         }
 
+
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Edit(long id)
@@ -181,6 +183,7 @@ namespace RealEstate.Controllers
             var model = new EditPropertyViewModel
             {
                 Id = proporty.Id,
+                Picture=proporty.Picture,
                 Description = proporty.Description,
                 City=proporty.City,
                 Street=proporty.Street,
@@ -198,26 +201,24 @@ namespace RealEstate.Controllers
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public IActionResult EditProperty(Property model)
+        public async Task<IActionResult> EditProperty(EditPropertyViewModel model)
         {
+            // property.Picture = filePath;
+            //string uploadsFolder = Path.Combine(_env.WebRootPath, "Images");
+            //string filePath = Path.Combine(uploadsFolder, model.Picture.);
 
-            if (model.Picture == null)
-            {
-                 
-            }
-            if (!ModelState.IsValid)
-            {
+            var property = await _db.Property.FindAsync(model.Id);
+            property.Description = model.Description;
+            property.City = model.City;
+            property.PostalCode = model.PostalCode;
+            property.Street = model.Street;
 
-            }
+            property.Area = model.Area;
+            property.Price = model.Price;
+            property.Service = model.Service;
 
-            try
-            {
-               // _db.Update()
-            }
-            catch(DbUpdateException ex)
-            {
-                // handle ex
-            }
+            _db.Update(property);
+           
             return View();
         }
 

@@ -30,12 +30,11 @@ namespace RealEstate.ViewModels
 
         public float? Price { get; set; } = 0;
 
-        public IFormFile? Picture { get; set; }
+        public string? Picture { get; set; }
  
         public string Service { get; set; } // rent or sell
 
-        [Display(Name = "Type")]
-        public Int64 PropertyTypeID { get; set; }
+    
  
 
       
