@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using RealEstate.Models;
-using RealEstate.ViewModels;
+ 
  
 
 namespace RealEstate.Data
@@ -18,7 +18,8 @@ namespace RealEstate.Data
 
 
         public DbSet<PropertyType> PropertyType { get; set; }
-        public DbSet<Property> Property { get; set; }  
+        public DbSet<Property> Property { get; set; }
+        public DbSet<Favorite> Favorite { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

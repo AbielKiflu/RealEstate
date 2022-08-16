@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace RealEstate.Controllers
 {
-    public class SaleController : Controller
+     
+    public class FavoriteController : Controller
     {
         private readonly ILogger<PropertyController> _logger;
         private readonly ApplicationDbContext _db;
@@ -19,7 +20,7 @@ namespace RealEstate.Controllers
         public static long userID;
 
 
-        public SaleController(ApplicationDbContext db, ILogger<PropertyController> logger, IHostingEnvironment env, UserManager<ApplicationUser> userManager)
+        public FavoriteController(ApplicationDbContext db, ILogger<PropertyController> logger, IHostingEnvironment env, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _env = env;
@@ -33,8 +34,9 @@ namespace RealEstate.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<Property> sale = _db.Property.Where(p => p.Service == "Sale");
-            return View(sale);
+            userID = long.Parse(_userManager.GetUserId(User));
+            IEnumerable<Property> favorite = _db.Property.Where(p => p.ApplicationUserID == userID);
+            return View(favorite);
         }
 
 

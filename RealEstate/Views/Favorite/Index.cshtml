@@ -1,0 +1,35 @@
+﻿@model IEnumerable<RealEstate.Models.Property>
+
+ 
+
+@{
+    ViewData["Title"] = "Index";
+        
+}
+
+<h1>Favorite</h1>
+<hr>
+
+ <div class="cards">
+ 
+@foreach (var item in Model) {
+        
+  <div class="card" style="width: 18rem;">
+  
+    <img  class="card-img-top" src="@("~/Images/"+ @item.Picture)" asp-append-version="true"/>
+
+    <div class="card-body">
+        <h5 class="card-title"> @Html.DisplayFor(modelItem => item.Description)</h5>
+        <p class="card-text">
+            <i class="bi bi-geo-alt-fill">  @Html.DisplayFor(modelItem => item.Street), @Html.DisplayFor(modelItem => item.PostalCode), @Html.DisplayFor(modelItem => item.City)</i><br/>
+            <i class="bi bi-tag-fill">@Html.DisplayFor(modelItem => item.Price)</i><br/>
+           <i class="bi bi-aspect-ratio-fill"> @Html.DisplayFor(modelItem => item.Area)m<sup>2</sup></i><br/>
+           For @Html.DisplayFor(modelItem => item.Service)<br/>
+        </p>
+        <a href="#" class="btn btn-primary"><i class="bi bi-suit-heart"></i></a>
+        </div>
+    </div>
+
+        }
+ 
+        </div>
