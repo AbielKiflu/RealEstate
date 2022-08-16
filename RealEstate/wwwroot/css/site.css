@@ -16,3 +16,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
