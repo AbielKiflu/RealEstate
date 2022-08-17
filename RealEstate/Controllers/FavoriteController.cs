@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 using RealEstate.Data;
 using RealEstate.Models;
-using System.Diagnostics;
-using RealEstate.ViewModels;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using Microsoft.AspNetCore.Identity;
+
+
+
 
 namespace RealEstate.Controllers
 {
@@ -38,6 +37,22 @@ namespace RealEstate.Controllers
             IEnumerable<Property> favorite = _db.Property.Where(p => p.ApplicationUserID == userID);
             return View(favorite);
         }
+
+        [HttpGet]
+     
+        public IActionResult Create(long id)
+        {
+            userID = long.Parse(_userManager.GetUserId(User));
+            Favorite favorite = new Favorite{
+                ApplicationUserID = userID,
+                PropertyID = id
+            };
+            _db.Favorite.Add(favorite);
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+
 
 
 

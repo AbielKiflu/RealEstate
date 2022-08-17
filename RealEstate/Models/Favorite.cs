@@ -19,7 +19,7 @@ namespace RealEstate.Models
   
         public Int64 PropertyID { get; set; }
 
-        public PropertyType? Property { get; set; }
+        public Property? Property { get; set; }
 
 
 
